@@ -1,0 +1,5 @@
+{
+  "name": "Shoptet CSV Marketing Transformer",
+  "description": "A specialized tool to transform Shoptet CSV exports into marketing-ready feeds (e.g., Google Ads). It filters active products, constructs full URLs with custom domains, and adds customizable labels.",
+  "requestFramePermissions": []
+}
