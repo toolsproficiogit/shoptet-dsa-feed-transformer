@@ -1,0 +1,44 @@
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build image
+    args:
+      [
+        'build',
+        '-t',
+        'europe-west1-docker.pkg.dev/$PROJECT_ID/web-apps/shoptet-csv-marketing-transformer:$SHORT_SHA',
+        '-f',
+        'Dockerfile',
+        '.'
+      ]
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push image
+    args:
+      [
+        'push',
+        'europe-west1-docker.pkg.dev/$PROJECT_ID/web-apps/shoptet-csv-marketing-transformer:$SHORT_SHA'
+      ]
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: Deploy to Cloud Run
+    args:
+      [
+        'run',
+        'deploy',
+        'shoptet-csv-marketing-transformer',
+        '--image',
+        'europe-west1-docker.pkg.dev/$PROJECT_ID/web-apps/shoptet-csv-marketing-transformer:$SHORT_SHA',
+        '--region',
+        'europe-west1',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated',
+        '--port',
+        '8080'
+      ]
+
+images:
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/web-apps/shoptet-csv-marketing-transformer:$SHORT_SHA'
